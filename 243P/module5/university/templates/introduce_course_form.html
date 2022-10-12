@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <title>University Registrar</title>
+  <head>
+    <link rel="stylesheet" href='/static/index.css'/>
+    <link rel="stylesheet" href='/static/css/bootstrap.min.css'/>
+  </head>
+  <body>
+    <form action="{{ url_for('introduce_course') }}" method="post">
+      <div class="container-fluid">
+        <div class="row p-3">
+          <div class="col"></div>
+          <div class="col">
+            <h1 class="center">Introduce A Course</h1>
+          </div>
+          <div class="col"></div>
+        </div>
+        <div class="row p-3">
+          <div class="col"></div>
+          <div class="col">
+          <input name="course_name" type="text" class="form-control" placeholder="Course Name">
+          </div>
+          <div class="col"></div>
+        </div>
+        <div class="row p-3">
+          <div class="col"></div>
+          <div class="col">
+          <input name="course_day_time" type="text" class="form-control" placeholder="Course Day Time">
+          </div>
+          <div class="col"></div>
+        </div>
+        <div class="row p-3">
+          <div class="col"></div>
+          <div class="col">
+            <button class="btn btn-primary">Submit</button>
+          </div>
+          <div class="col">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class='text-center'>
+      <button class="btn btn-danger " onclick="window.location.href='{{ url_for('index') }}';">Back to Home</button>
+    </div>
+    <div class='text-center p-3'>
+      <p>{{result_message if result_message != None else ""}}</p>
+    </div>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
+</html>
