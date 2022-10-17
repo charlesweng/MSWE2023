@@ -23,17 +23,36 @@ class City:
   def __str__(self):
     return f'{self.name}:{self.population}'
 
+def construct_graph(city_pop_filename, road_net_filename, cities, city_name_to_city):
+  with open(city_pop_filename) as f:
+    for line in f:
+      city_pop = line.strip().split(":")
+      city = City(city_pop[0].strip(), int(city_pop[1].strip()))
+      cities.append(city)
+      city_name_to_city[city.name] = city
+  with open(road_net_filename) as f:
+    for line in f:
+      edges = line.strip().split(":")
+      edges[0] = edges[0].strip()
+      edges[1] = edges[1].strip()
+      for city in cities:
+        if city.name == edges[0]:
+          city.connected_cities.append(city_name_to_city[edges[1]])
+        elif city.name == edges[1]:
+          city.connected_cities.append(city_name_to_city[edges[0]])
+
+def bfs(city):
+    q = [city]
+    visited = set([city])
+    while q:
+      c = q.pop(0)
+      for ct in c.connected_cities:
+        if ct not in visited:
+          visited.add(ct)
+          q.append(ct)
+    return visited
+
 def connected_islands(cities):
-  def bfs(city):
-      q = [city]
-      visited = set([city])
-      while q:
-        c = q.pop(0)
-        for ct in c.connected_cities:
-          if ct not in visited:
-            visited.add(ct)
-            q.append(ct)
-      return visited
   islands = 0
   island_map = {}
   visited = set()
@@ -63,13 +82,13 @@ def population_of_islands(cities):
 # https://www.geeksforgeeks.org/minimum-number-of-edges-between-two-vertices-of-a-graph/
 def unique_highways(cities, city1, city2):
   distance = {}
-  paths = {}
+  # paths = {}
   for city in cities:
     distance[city]=float("inf")
-    paths[city] = 0
+    # paths[city] = 0
   q = [city1]
   distance[city1] = 0
-  paths[city1] = 1
+  # paths[city1] = 1
   visited = set([city1])
   while q:
     c = q.pop(0)
@@ -80,9 +99,9 @@ def unique_highways(cities, city1, city2):
         visited.add(ct)
       if distance[ct] > distance[c] + 1:
         distance[ct] = distance[c] + 1
-        paths[ct] = paths[c]
-      elif distance[ct] == distance[c] + 1:
-        paths[ct] = paths[ct] + paths[c]
+        # paths[ct] = paths[c]
+      # elif distance[ct] == distance[c] + 1:
+      #   paths[ct] = paths[ct] + paths[c]
   # return paths[city2]
   return distance[city2]
 
@@ -95,30 +114,15 @@ def main():
   road_net_filename = args.road_network
   cities = []
   city_name_to_city = {}
-  with open(city_pop_filename) as f:
-    for line in f:
-      city_pop = line.strip().split(":")
-      city = City(city_pop[0].strip(), int(city_pop[1].strip()))
-      cities.append(city)
-      city_name_to_city[city.name] = city
-  with open(road_net_filename) as f:
-    for line in f:
-      edges = line.strip().split(":")
-      edges[0] = edges[0].strip()
-      edges[1] = edges[1].strip()
-      for city in cities:
-        if city.name == edges[0]:
-          city.connected_cities.append(city_name_to_city[edges[1]])
-        elif city.name == edges[1]:
-          city.connected_cities.append(city_name_to_city[edges[0]])
+  construct_graph(city_pop_filename, road_net_filename, cities, city_name_to_city)
   print("Finding population of each island: ")
   print(population_of_islands(cities))
   print("Finding number of islands: ")
   print(number_of_islands(cities))
   print("Number of unique highways from {} to {} is: ".format(cities[0], cities[2]))
   print(unique_highways(cities, cities[0], cities[2]))
-  print("Number of unique highways from {} to {} is: ".format(city_name_to_city["A"], city_name_to_city["P"]))
-  print(unique_highways(cities, city_name_to_city["A"], city_name_to_city["P"]))
+  # print("Minimum unique highways from {} to {} is: ".format(city_name_to_city["A"], city_name_to_city["C"]))
+  # print(unique_highways(cities, city_name_to_city["A"], city_name_to_city["C"]))
 
 if __name__ == "__main__":
   main()

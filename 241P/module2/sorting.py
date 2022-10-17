@@ -35,8 +35,9 @@ def merge_sort(li):
   return merge_list(l, r)
 
 def sort_string(s):
-  sb = list(s)
+  sb = list(map(lambda c: ord(c), s)) # convert str to ascii int values
   sb = merge_sort(sb)
+  sb = list(map(lambda a: chr(a), sb)) # convert ascii int values to str
   return ''.join(sb)
 
 def group_anagram(str_list):

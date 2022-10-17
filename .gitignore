@@ -2,3 +2,7 @@ venv
 .vscode
 *.class
 .DS_Store
+__pycache__
+node_modules
+243P/module5/university/__pycache__/
+react_intro

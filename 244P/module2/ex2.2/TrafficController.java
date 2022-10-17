@@ -37,18 +37,22 @@ public class TrafficController {
 
     public void leaveLeft() {
         synchronized (lockLeft) {
-            enteredRight--;
-            if (enteredRight == 0) {
-                lockLeft.notify();
+            synchronized (lockRight) {
+                enteredRight--;
+                if (enteredRight == 0) {
+                    lockLeft.notify();
+                }
             }
         }
     }
 
     public void leaveRight() {
         synchronized (lockRight) {
-            enteredLeft--;
-            if (enteredLeft == 0) {
-                lockRight.notify();
+            synchronized (lockLeft) {
+                enteredLeft--;
+                if (enteredLeft == 0) {
+                    lockRight.notify();
+                }
             }
         }
     }

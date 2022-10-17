@@ -51,4 +51,4 @@ def find_courses_from_students():
     cnx.close()
   if len(student) == 0:
     return redirect(url_for("find_courses_from_students_form", result_message="Student not found"))
-  return student + courses
+  return render_template('courses_of_student.html', student=student, courses=courses)
