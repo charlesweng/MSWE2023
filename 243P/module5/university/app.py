@@ -11,6 +11,7 @@ import introduce_course
 import enroll_course
 import find_students_in_courses
 import find_courses_from_students
+import course_time_from_student_day
 
 if __name__ == "__main__":
   app.run()

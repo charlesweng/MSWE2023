@@ -7,12 +7,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.nio.charset.Charset;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 public class UdpServer extends Thread {
 
@@ -35,7 +36,11 @@ public class UdpServer extends Thread {
     if (files == null) {
       throw new IllegalArgumentException("Invalid folder or path to files.");
     }
-    filePaths = Arrays.asList(files).stream().map(f -> f.getPath()).collect(Collectors.toList());
+    filePaths = new ArrayList<>();
+    for (File file : files) {
+      String[] fileArr = file.getPath().split("/");
+      filePaths.add(fileArr[fileArr.length - 1]);
+    }
   }
 
   public void run() {
@@ -75,7 +80,8 @@ public class UdpServer extends Thread {
           String fileName = fileCommand[1];
           boolean found = false;
           for (File file : files) {
-            if (file.getPath().equals(fileName)) {
+            String[] fileArr = file.getPath().split("/");
+            if (fileArr[fileArr.length - 1].equals(fileName)) {
               found = true;
               buf = "ok".getBytes();
               packet = new DatagramPacket(buf, buf.length, inetAddress, port);
@@ -86,6 +92,7 @@ public class UdpServer extends Thread {
               int ackSequence = 0;
               try (FileInputStream fin = new FileInputStream(file)) {
                 int fileLength = (int) file.length();
+                System.out.println("Total Bytes of File: " + Files.size(file.toPath()));
                 for (int i = 0; i < fileLength; i += 509) {
                   sequenceNumber += 1;
                   byte[] message = new byte[512];
@@ -110,10 +117,17 @@ public class UdpServer extends Thread {
                   }
 
                   DatagramPacket sendPacket = new DatagramPacket(message, message.length, inetAddress, port);
-                  socket.send(sendPacket);
+                  int randomPacketLoss = (new Random().nextInt(10) + 1);
+                  if (i != 0 && i % randomPacketLoss == 0) {
+                    System.out.println("Not sending packet " + sequenceNumber);
+                    // sequenceNumber--;
+                    // i--;
+                    socket.send(new DatagramPacket(new byte[] { 127, 127 }, 2, inetAddress, port));
+                  } else {
+                    socket.send(sendPacket);
+                  }
 
                   boolean ackReceived;
-
                   while (true) {
                     byte[] ack = new byte[2];
                     DatagramPacket ackPacket = new DatagramPacket(ack, ack.length);
@@ -131,6 +145,9 @@ public class UdpServer extends Thread {
                     if (ackSequence == sequenceNumber && ackReceived) {
                       break;
                     } else {
+                      // System.out.println("Sending: ");
+                      // System.out.println(new String(sendPacket.getData(), 0,
+                      // sendPacket.getData().length));
                       socket.send(sendPacket);
                     }
                   }

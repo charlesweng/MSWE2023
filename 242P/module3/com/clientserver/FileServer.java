@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,11 @@ public class FileServer extends Thread {
     if (files == null) {
       throw new Exception("Could not load files in the folder.");
     }
-    filePaths = Arrays.asList(files).stream().map(f -> f.getPath()).collect(Collectors.toList());
+    filePaths = new ArrayList<>();
+    for (File file : files) {
+      String[] filePathArr = file.getPath().split("/");
+      filePaths.add(filePathArr[filePathArr.length - 1]);
+    }
   }
 
   public int countLines(Path filePath) {
@@ -65,7 +70,8 @@ public class FileServer extends Thread {
           int length = filePaths.size();
           out.println(length);
           for (String filePath : filePaths) {
-            out.println(filePath);
+            String[] filePathArr = filePath.split("/");
+            out.println(filePathArr[filePathArr.length - 1]);
           }
         } else if (line.contains("get")) {
           String[] lineSplit = line.split(" ");
@@ -74,7 +80,8 @@ public class FileServer extends Thread {
             out.println("Invalid get command.");
           } else if (filePaths.contains(lineSplit[1])) {
             for (File file : files) {
-              if (file.getPath().equals(lineSplit[1])) {
+              String[] filePathArr = file.getPath().split("/");
+              if (filePathArr[filePathArr.length - 1].equals(lineSplit[1])) {
                 int lineCount = countLines(file.toPath()) + 1;
                 out.println(lineCount);
                 out.println("ok");

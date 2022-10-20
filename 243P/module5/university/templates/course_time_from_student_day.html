@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <title>University Registrar</title>
+  <head>
+    <link rel="stylesheet" href='/static/index.css'/>
+    <link rel="stylesheet" href='/static/css/bootstrap.min.css'/>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row p-3">
+        <div class="col"></div>
+        <div class="col">
+          <h3 class="center">Student Id: {{student[0]["student_id"]}}</h1>
+          <h3 class="center">Student Name: {{student[0]["first_name"]}} {{student[0]["last_name"]}}</h1>
+          <h3 class="center">Day: {{student[0]["day"]}}</h1>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+    <h3>Courses</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Course Name</th>
+          <th scope="col">Course Day Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in courses %}
+        <tr>
+          <td>{{course["course_id"]}}</td>
+          <td>{{course["course_name"]}}</td>
+          <td>{{course["course_day_time"]}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class='text-center'>
+      <button class="btn btn-danger " onclick="window.location.href='{{ url_for('course_time_from_student_day_form') }}';">Back to Find Courses Time of Student</button>
+    </div>
+    <div class='text-center p-3'>
+      <p>{{result_message if result_message != None else ""}}</p>
+    </div>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
+</html>

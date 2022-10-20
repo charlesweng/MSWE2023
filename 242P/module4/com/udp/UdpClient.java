@@ -7,6 +7,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UdpClient {
 
@@ -21,6 +23,8 @@ public class UdpClient {
   }
 
   public static void main(String[] args) {
+    long byteCount = 0;
+    Set<Integer> sequenceLost = new HashSet<>();
     try {
       String hostname = "localhost";
       int port = 4445;
@@ -59,23 +63,35 @@ public class UdpClient {
               byte[] fileData = new byte[509];
 
               DatagramPacket receivedPacket = new DatagramPacket(message, message.length);
-              socket.setSoTimeout(0);
+              socket.setSoTimeout(5000);
               socket.receive(receivedPacket);
 
               message = receivedPacket.getData();
 
               sequenceNumber = ((message[0] & 0xff) << 8) + (message[1] & 0xff);
               endOfFile = (message[2] & 0xff) == 1;
-              if (sequenceNumber == findLast + 1) {
+              if (sequenceNumber == findLast + 1 && (message[0] != 127 && message[1] != 127)) {
                 findLast = sequenceNumber;
                 System.arraycopy(message, 3, fileData, 0, 509);
-
+                String fileStringData = new String(fileData, 0, fileData.length);
+                byteCount += fileStringData.length();
                 System.out.print(new String(fileData, 0, fileData.length));
                 sendAck(findLast, socket, address, port);
               } else {
-                sendAck(findLast, socket, address, port);
+                if (message[0] == 127 && message[1] == 127) {
+                  sequenceLost.add(findLast + 1);
+                } else {
+                  sendAck(findLast, socket, address, port);
+                }
               }
+
               if (endOfFile) {
+                System.out.println();
+                System.out.println("Total bytecount: " + byteCount);
+                System.out.println("Sequences lost include packets: ");
+                for (Integer lostPacket : sequenceLost) {
+                  System.out.print(lostPacket + " ");
+                }
                 System.exit(0);
               }
             }
@@ -109,6 +125,12 @@ public class UdpClient {
       }
     } catch (Exception ex) {
       System.err.format("Exception: %s%n", ex);
+    }
+    System.out.println();
+    System.out.println("Total bytecount: " + byteCount);
+    System.out.println("Sequences lost include packets: ");
+    for (Integer lostPacket : sequenceLost) {
+      System.out.print(lostPacket + " ");
     }
   }
 }

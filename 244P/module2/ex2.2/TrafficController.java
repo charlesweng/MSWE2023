@@ -47,8 +47,8 @@ public class TrafficController {
     }
 
     public void leaveRight() {
-        synchronized (lockRight) {
-            synchronized (lockLeft) {
+        synchronized (lockLeft) {
+            synchronized (lockRight) {
                 enteredLeft--;
                 if (enteredLeft == 0) {
                     lockRight.notify();

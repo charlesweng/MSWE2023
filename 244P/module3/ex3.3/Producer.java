@@ -4,7 +4,7 @@ public class Producer implements Runnable {
 	private BlockingQueue<Message> queue;
 	private boolean running = true;
 	private int id;
-	private int prodCount = 0;
+	private static int prodCount = 0;
 
 	public Producer(BlockingQueue<Message> q, int n) {
 		queue = q;
