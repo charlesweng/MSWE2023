@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -46,14 +47,14 @@ public class FrequencyCount {
 			String[] words = line.split("\\W+");
 			for (String word : words) {
 				String w = word.toLowerCase();
-				synchronized (this) {
-					if (!stop_words.contains(w) && w.length() > 2) {
-						if (frequencies.containsKey(w))
-							frequencies.put(w, frequencies.get(w) + 1);
-						else
-							frequencies.put(w, 1);
-					}
+				// synchronized (this) {
+				if (!stop_words.contains(w) && w.length() > 2) {
+					if (frequencies.containsKey(w))
+						frequencies.put(w, frequencies.get(w) + 1);
+					else
+						frequencies.put(w, 1);
 				}
+				// }
 			}
 		}
 
@@ -112,38 +113,51 @@ public class FrequencyCount {
 		System.out.println("Ended " + p);
 	}
 
-	private static final int NTHREADS = 4;
+	// cpu cores
+	private static final int NTHREADS = Runtime.getRuntime().availableProcessors();
 	private static final ExecutorService exec = Executors.newFixedThreadPool(NTHREADS);
 
 	public static void main(String[] args) {
-
 		loadStopWords();
 		Counter c = new Counter();
 
 		long start = System.nanoTime();
-		// List<Callable<Map<String, Integer>>> tasks = new ArrayList<>();
+		List<Callable<Counter>> tasks = new ArrayList<>();
 		try {
 			try (Stream<Path> paths = Files.walk(Paths.get("."))) {
 				paths.filter(p -> p.toString().endsWith(".txt"))
-						// .forEach(p -> tasks.add(new Callable<Map<String, Integer>>() {
-						// public Map<String, Integer> call() {
-						// countWords(p, c);
-						// return c.getFrequencies();
-						// }
-						// }));
-						.forEach(p -> exec.execute(
-								new Runnable() {
-									@Override
-									public void run() {
-										countWords(p, c);
-									}
-								}));
+						.forEach(p -> tasks.add(new Callable<Counter>() {
+							public Counter call() {
+								Counter c = new Counter();
+								countWords(p, c);
+								return c;
+							}
+						}));
+				// .forEach(p -> exec.execute(
+				// new Runnable() {
+				// @Override
+				// public void run() {
+				// countWords(p, c);
+				// }
+				// }));
 				// .forEach(p -> countWords(p, c));
-				exec.shutdown();
+				// exec.shutdown();
+				// try {
+				// exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
 				try {
-					exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+					List<Future<Counter>> futures = exec.invokeAll(tasks);
+					for (Future<Counter> future : futures) {
+						c.merge(future.get());
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} finally {
+					exec.shutdown();
 				}
 			}
 		} catch (IOException e) {

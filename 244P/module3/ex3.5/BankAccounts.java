@@ -11,14 +11,16 @@ import java.util.concurrent.atomic.*;
 public class BankAccounts {
 	private static final Object tieLock = new Object();
 
-	private static void transferMoneyHelper(Account fromAccount,
-			Account toAccount,
-			DollarAmount amount) throws InsufficientFundsException {
-		if (fromAccount.getBalance().compareTo(amount) < 0)
-			throw new InsufficientFundsException();
-		else {
-			fromAccount.debit(amount);
-			toAccount.credit(amount);
+	static class Helper {
+		private void transferMoneyHelper(Account fromAccount,
+				Account toAccount,
+				DollarAmount amount) throws InsufficientFundsException {
+			if (fromAccount.getBalance().compareTo(amount) < 0)
+				throw new InsufficientFundsException();
+			else {
+				fromAccount.debit(amount);
+				toAccount.credit(amount);
+			}
 		}
 	}
 
@@ -31,20 +33,20 @@ public class BankAccounts {
 		if (fromHash < toHash) {
 			synchronized (fromAccount) {
 				synchronized (toAccount) {
-					transferMoneyHelper(fromAccount, toAccount, amount);
+					(new Helper()).transferMoneyHelper(fromAccount, toAccount, amount);
 				}
 			}
 		} else if (fromHash > toHash) {
 			synchronized (toAccount) {
 				synchronized (fromAccount) {
-					transferMoneyHelper(fromAccount, toAccount, amount);
+					(new Helper()).transferMoneyHelper(fromAccount, toAccount, amount);
 				}
 			}
 		} else {
 			synchronized (tieLock) {
 				synchronized (fromAccount) {
 					synchronized (toAccount) {
-						transferMoneyHelper(fromAccount, toAccount, amount);
+						(new Helper()).transferMoneyHelper(fromAccount, toAccount, amount);
 					}
 				}
 			}
