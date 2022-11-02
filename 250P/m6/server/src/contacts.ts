@@ -3,7 +3,7 @@ import * as path from "path";
 const Datastore = require("nedb");
 
 export interface IContact {
-  _id?: number, name: string, email: string
+  _id?: number, name: string, email: string, image?: string,
 }
 
 export class Worker {

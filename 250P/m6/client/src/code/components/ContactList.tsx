@@ -7,6 +7,12 @@ const ContactList = ({state}) => {
     <List>
       {
         state.contacts.map(value => {
+          let avatarImage;
+          if (value.image) {
+            avatarImage = <img src={value.image}></img>;
+          } else {
+            avatarImage = <Person></Person>;
+          }
           return(
             <ListItem
               key={value}
@@ -14,7 +20,7 @@ const ContactList = ({state}) => {
             >
               <ListItemAvatar>
                 <Avatar>
-                  <Person></Person>
+                  { avatarImage }
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={`${value.name}`}></ListItemText>
