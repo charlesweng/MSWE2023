@@ -2,7 +2,6 @@ import * as IMAP from "./IMAP";
 import * as Contacts from "./Contacts";
 import * as SMTP from "./SMTP";
 import { config } from "./config";
-import { ThreeSixtyRounded } from "@material-ui/icons";
 import { toBase64 } from "./Utils";
 
 export function createState(inParentComponent) {
@@ -80,6 +79,7 @@ export function createState(inParentComponent) {
         contactID: null,
         contactName: "",
         contactEmail: "",
+        contactImage: "",
       });
     }.bind(inParentComponent),
 
