@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios"
 import { config } from "./config"
 
 export interface IContact {
-  _id?: number, name: string, email: string
+  _id?: number, name: string, email: string, image?: string,
 };
 
 export class Worker {

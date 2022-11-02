@@ -1,0 +1,21 @@
+{
+  "name": "m2",
+  "version": "1.0.0",
+  "description": "simple webserver",
+  "main": "server.js",
+  "scripts": {
+    "start": "PORT=80 node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Charles Weng",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/plugin-transform-arrow-functions": "^7.18.6",
+    "@babel/preset-react": "^7.18.6"
+  }
+}

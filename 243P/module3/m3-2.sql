@@ -1,13 +1,15 @@
 USE ap;
 
 -- 1
+DROP INDEX vendors_vendor_zip_code_ix ON vendors;
 CREATE INDEX vendors_vendor_zip_code_ix
 ON vendors (vendor_zip_code);
 
 -- 2
+DROP DATABASE ex;
 CREATE DATABASE IF NOT EXISTS ex;
 USE ex;
-
+DROP TABLE IF EXISTS members;
 CREATE TABLE IF NOT EXISTS members
 (
 member_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -18,13 +20,13 @@ city VARCHAR(50),
 state VARCHAR(50),
 phone VARCHAR(20)
 );
-
+DROP TABLE IF EXISTS committees;
 CREATE TABLE IF NOT EXISTS committees
 (
 committee_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 committee_name VARCHAR(100)
 );
-
+DROP TABLE IF EXISTS members_committees;
 CREATE TABLE IF NOT EXISTS members_committees
 (
 committee_id INT NOT NULL,
@@ -60,10 +62,13 @@ ORDER BY committee_name, last_name, first_name;
 
 -- 4
 ALTER TABLE members
-ADD annual_dues DECIMAL(5, 2) NOT NULL DEFAULT 52.50;
+ADD annual_dues DECIMAL(5, 2) NOT NULL DEFAULT 52.50,
+ADD payment_date DATE;
 
 ALTER TABLE members
 ADD payment_date DATE;
+
+SELECT * FROM members;
 
 -- 5
 ALTER TABLE committees

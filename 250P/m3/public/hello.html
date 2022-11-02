@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Simple Web Page</title>
+  </head>
+  <body>
+    <h1>Simple Webserver</h1>
+    <p>This is a simple web page to be displayed by a NodeJS application</p>
+    <input id="inputitem" type='text'/>
+    <button onclick="addToList()">Submit</button>
+    <ol id="listofitems">
+    </ol>
+  </body>
+  <script type="application/javascript">
+    function addToList() {
+      var inputItem = document.getElementById("inputitem").value;
+      if (inputItem !== null && inputItem != "") {
+        document.getElementById("listofitems").innerHTML += `<li>${inputItem}</li>`
+      }
+    }
+  </script>
+</html>

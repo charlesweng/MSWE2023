@@ -7,7 +7,7 @@ ORDER BY vendor_contact_last_name, vendor_contact_first_name ASC;
 SELECT CONCAT(vendor_contact_last_name, ', ', vendor_contact_first_name)
 FROM vendors
 WHERE vendor_contact_last_name REGEXP '^[ABCE]'
-ORDER BY vendor_contact_first_name;
+ORDER BY vendor_contact_last_name, vendor_contact_first_name;
 
 -- 10
 SELECT invoice_due_date AS 'Due Date',

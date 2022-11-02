@@ -8,7 +8,7 @@ import * as IMAP from './IMAP';
 import * as Contacts from './Contacts';
 
 const baseComponent = ReactDOM.render(
-  <BaseLayout />, document.body
+  <BaseLayout />, document.getElementById("root")
 );
 
 baseComponent.state.showHidePleaseWait(true);

@@ -77,7 +77,7 @@ public class FileServer extends Thread {
           String[] lineSplit = line.split(" ");
           if (lineSplit.length != 2) {
             out.println(1);
-            out.println("Invalid get command.");
+            out.println("error");
           } else if (filePaths.contains(lineSplit[1])) {
             for (File file : files) {
               String[] filePathArr = file.getPath().split("/");
@@ -98,7 +98,7 @@ public class FileServer extends Thread {
                 } catch (SecurityException x) {
                   System.err.format("SecurityException: s%n%", x);
                 }
-                break;
+                // break;
               }
             }
           } else {
@@ -106,7 +106,7 @@ public class FileServer extends Thread {
             out.println("error");
           }
         } else if (line.equals("close")) {
-          break;
+          // break;
         } else {
           out.println(1);
           out.println("Command not available.");

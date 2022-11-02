@@ -77,7 +77,7 @@ public class UdpServer extends Thread {
             packet = new DatagramPacket(buf, buf.length, inetAddress, port);
             socket.send(packet);
           }
-          String fileName = fileCommand[1];
+          String fileName = fileCommand[fileCommand.length - 1];
           boolean found = false;
           for (File file : files) {
             String[] fileArr = file.getPath().split("/");

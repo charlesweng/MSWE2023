@@ -1,6 +1,10 @@
 CREATE DATABASE university;
 USE university;
 
+DROP TABLE IF EXISTS students_courses;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS courses;
+
 CREATE TABLE IF NOT EXISTS students (
 student_id INT PRIMARY KEY AUTO_INCREMENT,
 first_name VARCHAR(50) NOT NULL,

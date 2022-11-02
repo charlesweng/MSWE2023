@@ -8,3 +8,6 @@ node_modules
 react_intro
 242P/module2/file2.txt
 242P/module2/file4.txt
+serverInfo.json
+*.zip
+dist
