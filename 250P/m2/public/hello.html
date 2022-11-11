@@ -1,14 +1,37 @@
 <html>
   <head>
     <title>Simple Web Page</title>
+    <style>
+      h1 { 
+        color: blue;
+        border: 2px solid orange;
+        display: inline;
+        padding: 5px 5px 5px 5px;
+        border-width: thick;
+      }
+      li {
+        margin-top: 2px;
+        color: blueviolet;
+        border: 2px solid green;
+        padding: 5px 5px 5px 5px;
+      }
+      p {
+        color: brown;
+      }
+      .list_div {
+        max-width: fit-content;
+      }
+    </style>
   </head>
   <body>
     <h1>Simple Webserver</h1>
     <p>This is a simple web page to be displayed by a NodeJS application</p>
     <input id="inputitem" type='text'/>
     <button onclick="addToList()">Submit</button>
-    <ol id="listofitems">
-    </ol>
+    <div class="list_div">
+      <ol id="listofitems">
+      </ol>
+    </div>
   </body>
   <script type="application/javascript">
     function addToList() {

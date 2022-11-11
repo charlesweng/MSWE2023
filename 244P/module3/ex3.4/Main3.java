@@ -20,7 +20,7 @@ public class Main3 {
             try {
                 sem.acquire();
                 d.addRow("AAAAAAAAAAAA  " + i);
-                d.addRow("BBBBBBBBBBBB  " + i);
+                // d.addRow("BBBBBBBBBBBB " + i);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -42,7 +42,7 @@ public class Main3 {
             } finally {
                 sem.release();
             }
-            nap(rand.nextInt(2500));
+            nap(rand.nextInt(5000));
 
         }
     }

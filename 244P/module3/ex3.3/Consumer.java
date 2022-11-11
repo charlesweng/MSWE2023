@@ -1,13 +1,16 @@
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class Consumer implements Runnable {
 	private BlockingQueue<Message> queue;
 	private int id;
+	private Map<String, Integer> sentReceived;
 
-	public Consumer(BlockingQueue<Message> q, int n) {
+	public Consumer(BlockingQueue<Message> q, int n, Map<String, Integer> sentReceived) {
 		queue = q;
 		id = n;
+		this.sentReceived = sentReceived;
 	}
 
 	public void run() {
@@ -19,9 +22,9 @@ public class Consumer implements Runnable {
 				if (msg == null) {
 					break;
 				}
-				if (msg.get().equals("stop")) {
-					queue.put(msg);
-				}
+				// if (msg.get().equals("stop")) {
+				// queue.offer(msg);
+				// }
 				count++;
 				RandomUtils.print("Consumed " + msg.get(), id);
 				Thread.sleep(RandomUtils.randomInteger());
@@ -33,6 +36,10 @@ public class Consumer implements Runnable {
 		} while (msg.get() != "stop");
 		// Don't count the "stop" message
 		count--;
+		if (msg == null) {
+			count++;
+		}
 		RandomUtils.print("Messages received: " + count, id);
+		sentReceived.put("consumer-" + id, count);
 	}
 }

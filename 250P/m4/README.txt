@@ -5,6 +5,14 @@ Browser: Firefox 106.0
 Operating System: macOS Monterey Version 12.5
 Architecture: ARM-based
 
+Typescript Features
+===================
+List of typescript features I used:
+1. classes
+2. arrow functions
+3. type definitions
+4. any type declarations
+
 How to Test The Webserver
 =========================
 Run `npm install`

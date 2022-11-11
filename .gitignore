@@ -11,3 +11,4 @@ react_intro
 serverInfo.json
 *.zip
 dist
+build

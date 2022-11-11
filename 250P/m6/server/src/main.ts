@@ -19,7 +19,7 @@ app.use("/",
 app.use(function(inRequest: Request, inResponse: Response, inNext: NextFunction) {
   inResponse.header("Access-Control-Allow-Origin", "*");
   inResponse.header("Access-Control-Allow-Methods",
-    "GET,POST,DELETE,OPTIONS"
+    "GET,POST,PUT,DELETE,OPTIONS"
   );
   inResponse.header("Access-Control-Allow-Headers", 
     "Origin,X-Requested-With,Content-Type,Accept"

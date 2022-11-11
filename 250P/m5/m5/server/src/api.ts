@@ -3,7 +3,7 @@ import { Book } from './Book';
 
 const api = express();
 
-const data = [
+const data: Book[] = [
   new Book("How To Build A Website", "Robert Half"),
   new Book("How To Write An Essay", "James Wayne"),
   new Book("How Make Money", "Richard Stocks"),

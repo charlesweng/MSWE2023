@@ -17,7 +17,7 @@ public class Main3 {
         // Add a sequence of addRow operations with short random naps.
         for (int i = 0; i < 1000; i++) {
             d.addRow("AAAAAAAAAAAA  " + i);
-            d.addRow("BBBBBBBBBBBB  " + i);
+            // d.addRow("BBBBBBBBBBBB " + i);
             nap(rand.nextInt(2500));
         }
     }

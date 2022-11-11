@@ -42,7 +42,7 @@ def main():
         except Exception as exc:
             print(f'{c.taskName} generated an exception: {exc}')
     print("=======================Top 40 Most Common Words===========================")
-    for (w, c) in collections.Counter(mainCounter.frequencies).most_common(40):
+    for (w, c) in collections.Counter(mainCounter.frequencies).most_common(42):
         print(w, '-', c)
 
 if __name__ == "__main__":

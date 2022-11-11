@@ -7,7 +7,7 @@ import BookForm from './BookForm';
 
 
 const initialListItems = [
-  new Book("HTML and CSS: Design and Build Websites", "John Duckett", "https://www.amazon.com/HTML-CSS-Design-Build-Websites/dp/1118008189", "https://d1b14unh5d6w7g.cloudfront.net/1118008189.01.S001.LXXXXXXX.jpg?Expires=1666719658&Signature=cR4zqtEcmASkS3RtzVLU0rrOFOtqwEjN1YPGSMYgsrjyRVeArq3TR1EN2rs5yec168a9Wkky9vQKvpato6sTe4~Lp5LqZi2O6WaZYEe2758H-ICNJMynG2QIj6-uqVJ6DqBqrvDDwVDF~SZH5Bzc9x8wzYFGMHkos7gyUxKklPA_&Key-Pair-Id=APKAIUO27P366FGALUMQ"),
+  new Book("HTML and CSS: Design and Build Websites", "John Duckett", "https://www.amazon.com/HTML-CSS-Design-Build-Websites/dp/1118008189", "https://m.media-amazon.com/images/I/31b4K-hFH-L._AC_SY780_.jpg"),
   new Book("Modern Full-Stack Development Using TypeScript, React, Node.js, Webpack and Docker", "Frank Zammetti", "https://link.springer.com/book/10.1007/978-1-4842-5738-8", "https://m.media-amazon.com/images/P/1484257375.01._SCLZZZZZZZ_SX500_.jpg")
 ] as Book[];
 

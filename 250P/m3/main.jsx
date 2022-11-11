@@ -123,7 +123,7 @@ function start() {
           webPageDescription: description,
           webPageLink: link
         }]
-      })
+      });
       console.log(this.state.globalBookmarks);
     }
 
